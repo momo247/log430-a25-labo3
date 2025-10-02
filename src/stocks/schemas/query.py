@@ -4,7 +4,7 @@ from stocks.schemas.product import Product
 from db import get_redis_conn
 
 class Query(ObjectType):       
-    product = graphene.Field(Product, id=String(required=True))
+    product = graphene.Field(Product, product_id=String(required=True))
     stock_level = Int(product_id=String(required=True))
     
     def resolve_product(self, info, product_id):
@@ -14,9 +14,11 @@ class Query(ObjectType):
         # TODO: ajoutez les colonnes name, sku, price
         if product_data:
             return Product(
-                id=product_id,
-                name=f"Product {product_id}",
-                quantity=int(product_data['quantity'])
+                id=int(product_id),
+                name=product_data.get("name", f"Product {product_id}"),
+                sku=product_data.get("sku"),
+                price=float(product_data["price"]) if product_data.get("price") else None,
+                quantity=int(product_data["quantity"])
             )
         return None
     
