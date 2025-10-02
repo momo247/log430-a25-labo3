@@ -42,6 +42,10 @@ jobs:
           docker compose build store_manager
           docker compose run --rm store_manager python -m pytest -v tests
 
+      - name: Cleanup pytest cache
+        run: sudo rm -rf src/.pytest_cache || true
+
+
   deploy:
     runs-on: self-hosted
     needs: test
