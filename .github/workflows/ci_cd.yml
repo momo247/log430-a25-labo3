@@ -9,6 +9,10 @@ jobs:
   test:
     runs-on: self-hosted
     steps:
+
+      - name: Cleanup pytest cache
+        run: sudo rm -rf src/.pytest_cache || true
+
       - uses: actions/checkout@v4
 
       - name: Set up Python
